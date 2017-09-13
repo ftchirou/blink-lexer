@@ -1,0 +1,50 @@
+## Literals
+
+<escaped_character>  = \" | \\ | \/ | \b | \f | \n | \r | \t  
+<character>          = any ASCII character expect ", \ and the control characters | <escaped_character>  
+<characters>         = <character> <character>*  
+<string>             = "" | " <characters> "
+<zero>               = 0
+<positive_digit>     = [1..9]
+<digit>              = <zero> | <positive_digit>
+<digits>             = <digit> <digit>*
+<integer>            = <zero> | <positive_digit> <digit>*
+<fractional_part>    = . <digits>
+<exponent_part>      = (E | e) (+ | - | ε) <positive_digit> <digit>*
+<decimal>            = (<fractional_part> | <zero> <fractional_part>) (<exponent_part> | ε) |
+                       <integer> <fractional_part> |
+                       <integer> <exponent_part>
+<letter>             = [a-zA-Z]
+<operator>           = + | - | * | / | = | > | < | ! | & | % | ~ | $ | ^
+<operator_extended>  = <operator> | <operator> = | && | ||
+<delimiter>          = { | [ | ( | } | ] | ) | : | ,
+<identifier>         = (<letter> | _) (<letter> | <digit> | <operator> | _)*
+
+## Keywords
+
+<abstract>           = abstract
+<as>                 = as
+<class>              = class
+<else>               = else
+<extends>            = extends
+<false>              = false
+<final>              = final
+<func>               = func
+<for>                = for
+<if>                 = if
+<in>                 = in
+<lazy>               = lazy
+<let>                = let
+<new>                = new
+<null>               = null
+<override>           = override
+<private>            = private
+<protected>          = protected
+<return>             = return
+<super>              = super
+<to>                 = to
+<this>               = this
+<true>               = true
+<var>                = var
+<while>              = while
+

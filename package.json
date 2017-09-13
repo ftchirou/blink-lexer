@@ -1,0 +1,27 @@
+{
+  "name": "blink",
+  "version": "0.0.1",
+  "description": "An interpreter and tiny object-oriented programming language built for educational purposes.",
+  "main": "build/main/lexer/lexer.js",
+  "dependencies": {
+    "babel-preset-es2015": "^6.1.18"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.2.0",
+    "mocha": "^2.3.4"
+  },
+  "scripts": {
+    "build": "babel src --source-maps --out-dir build",
+    "test": "mocha --recursive build/test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ftchirou/blink-lexer.git"
+  },
+  "keywords": [
+    "blink",
+    "lexer"
+  ],
+  "author": "Faiçal Tchirou",
+  "license": "ISC"
+}
