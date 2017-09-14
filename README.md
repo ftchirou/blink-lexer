@@ -21,6 +21,7 @@ The goal of this challenge is to write a lexer for Blink in [JavaScript (ES6)](h
 - [lexer.js](src/main/lexer/lexer.js) contains a skeleton for a `Lexer` class with a empty `nextToken()` method. This is the file where all of your changes should be made.
 - [lexer-test.js](src/test/lexer/lexer-test.js) contains the unit tests validating that your implementation of the `Lexer` class works as expected.
 - [lexical-grammar.txt](lexical-grammar.txt) contains the regular expressions describing valid Blink lexemes. This will serve as guide when implementing the `nextToken()` method in the `Lexer` class.
+- [A tour of Blink](https://hackernoon.com/lets-build-a-programming-language-2612349105c6#1d67). An overview of all the features in Blink.
 
 ### How to run the tests
 
