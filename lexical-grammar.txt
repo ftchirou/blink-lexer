@@ -19,6 +19,8 @@
 <operator_extended>  = <operator> | <operator> = | && | ||
 <delimiter>          = { | [ | ( | } | ] | ) | : | ,
 <identifier>         = (<letter> | _) (<letter> | <digit> | <operator> | _)*
+<newline>            = \n | \r\n
+<comment>            = // <character>* <newline>
 
 ## Keywords
 
