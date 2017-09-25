@@ -17,7 +17,7 @@ export default class Dict {
     }
 
     hasValue(value) {
-        return !!this.getKeyFor(value)
+        return this.reversed.hasOwnProperty(value)
     }
 
     get keys() {
