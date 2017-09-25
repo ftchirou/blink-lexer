@@ -12,7 +12,8 @@
   },
   "scripts": {
     "build": "babel src --source-maps --out-dir build",
-    "test": "mocha --recursive build/test/"
+    "test": "npm run build && mocha -b --recursive build/test/",
+    "test:debug": "node --inspect-brk=0.0.0.0:5858 node_modules/mocha/bin/mocha --recursive build/test/"
   },
   "repository": {
     "type": "git",
