@@ -1,5 +1,57 @@
-export var TokenType = {
+import Dict from './Dict'
 
+export const Operators = new Dict({
+    // Dispatch operators
+    Dot: '.',
+    // Assignment operators
+    LeftArrow: '<-',
+    DivEqual: '/=',
+    Equal: '=',
+    MinusEqual: '-=',
+    ModuloEqual: '%=',
+    PlusEqual: '+=',
+    RightArrow: '->',
+    TimesEqual: '*=',
+    // Arithmetic operators
+    Div: '/',
+    Modulo: '%',
+    Minus: '-',
+    Plus: '+',
+    Times: '*',
+    // Comparison operators
+    DoubleEqual: '==',
+    Greater: '>',
+    GreaterOrEqual: '>=',
+    Less: '<',
+    LessOrEqual: '<=',
+    NotEqual: '!=',
+    // Boolean operators
+    And: '&&',
+    Not: '!',
+    Or: '||',
+    // Other operators
+    Tilde: '~',
+    TildeEqual: '~=',
+    Dollar: '$',
+    DollarEqual: '$=',
+    Caret: '^',
+    CaretEqual: '^=',
+});
+
+export const Delimiters = new Dict({
+    // Delimiters
+    Colon: ':',
+    Comma: ',',
+    LeftBrace: '{',
+    LeftBracket: '[',
+    LeftParen: '(',
+    Newline: '\n',
+    RightBrace: '}',
+    RightBracket: ']',
+    RightParen: ')',
+});
+
+export const Keywords = new Dict({
     // Keywords
     Abstract: 'abstract',
     As: 'as',
@@ -26,66 +78,23 @@ export var TokenType = {
     True: 'true',
     Var: 'var',
     While: 'while',
+});
 
-    // Dispatch operators
-    Dot: '.',
+export const TokenType = Object.assign(
+    {},
+    Operators.object,
+    Delimiters.object,
+    Keywords.object,
+    {
 
-    // Assignment operators
-    LeftArrow: '<-',
-    DivEqual: '/=',
-    Equal: '=',
-    MinusEqual: '-=',
-    ModuloEqual: '%=',
-    PlusEqual: '+=',
-    RightArrow: '->',
-    TimesEqual: '*=',
 
-    // Arithmetic operators
-    Div: '/',
-    Modulo: '%',
-    Minus: '-',
-    Plus: '+',
-    Times: '*',
+        // Identifier and Literals
+        Identifier: 'identifier',
+        Integer: 'integer',
+        Decimal: 'decimal',
+        String: 'string',
 
-    // Comparison operators
-    DoubleEqual: '==',
-    Greater: '>',
-    GreaterOrEqual: '>=',
-    Less: '<',
-    LessOrEqual: '<=',
-    NotEqual: '!=',
-
-    // Boolean operators
-    And: '&&',
-    Not: '!',
-    Or: '||',
-
-    // Other operators
-    Tilde: '~',
-    TildeEqual: '~=',
-    Dollar: '$',
-    DollarEqual: '$=',
-    Caret: '^',
-    CaretEqual: '^=',
-
-    // Identifier and Literals
-    Identifier: 'identifier',
-    Integer: 'integer',
-    Decimal: 'decimal',
-    String: 'string',
-
-    // Delimiters
-    Colon: ':',
-    Comma: ',',
-    LeftBrace: '{',
-    LeftBracket: '[',
-    LeftParen: '(',
-    Newline: '\n',
-    RightBrace: '}',
-    RightBracket: ']',
-    RightParen: ')',
-
-    // Special token types
-    EndOfInput: 'EndOfInput',
-    Unrecognized: 'Unrecognized'
-};
+        // Special token types
+        EndOfInput: 'EndOfInput',
+        Unrecognized: 'Unrecognized'
+    });

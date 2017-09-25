@@ -1,8 +1,11 @@
 import { Token } from './token'
-import { TokenType } from './tokentype'
-import { isNewLine, isDigit, isLetter, isWhitespaceOrNewLine } from './charUtils'
+import { TokenType, Operators, Delimiters, Keywords } from './tokentype'
+import { isNewLine, isDigit, isLetter, isWhitespaceOrNewLine, isUnderscore } from './charUtils'
 import FSM from './fsm'
 import StringFSM from './fsmString'
+
+const isValidInIdentifier = char => /[a-z_$]/i.test(char);
+
 export class Lexer {
     constructor(input) {
         this.input = input;
@@ -35,6 +38,7 @@ export class Lexer {
     }
 
     recognizeNewLine() {
+
         const { line, column } = this.currentState();
         this.updateState(1, -1, 1)
         return new Token(TokenType.Newline, '\n', line, column);
@@ -45,13 +49,15 @@ export class Lexer {
         const foundChars = [];
         let char = this.input.charAt(position + foundChars.length);
 
-        while (isLetter(char)) {
+        while (isValidInIdentifier(char) || isDigit(char)) {
             foundChars.push(char);
             char = this.input.charAt(position + foundChars.length);
         }
 
         this.updateState(0, foundChars.length, foundChars.length);
-        return new Token(TokenType.Identifier, foundChars.join(''), line, column)
+        const value = foundChars.join('');
+        const type = Keywords.hasValue(value) ? value : TokenType.Identifier;
+        return new Token(type, value, line, column)
 
     }
 
@@ -155,19 +161,42 @@ export class Lexer {
         }
     }
 
+    recognizeToken(type, value) {
+        const token = new Token(type, value, this.line, this.column);
+        const len = value.length;
+        this.updateState(0, len, len);
+        return token;
+    }
+
+    lookAhead() {
+        return this.input.charAt(this.position + 1)
+    }
+
+    nextChar() {
+        return this.input.charAt(this.position)
+    }
+
+    ignoreSpaces() {
+        let char = this.nextChar();
+        while (char === ' ') {
+            this.updateState(0, 1, 1)
+            char = this.nextChar();
+        }
+        return char;
+    }
 
     nextToken() {
         if (this.position >= this.input.length) {
             return new Token(TokenType.EndOfInput);
         }
 
-        let character = this.input.charAt(this.position);
+        const character = this.ignoreSpaces();
 
-        if (isLetter(character)) {
+        if (isValidInIdentifier(character)) {
             return this.recognizeIdentifier();
         }
 
-        if (isDigit(character) || character === '.') {
+        if (isDigit(character) || (character === '.' && isDigit(this.lookAhead()))) {
             return this.recognizeNumber();
         }
 
@@ -179,6 +208,21 @@ export class Lexer {
             return this.recognizeNewLine();
         }
 
-        throw new Error(`Unrecognized character ${character} at line ${this.line} and column ${this.column}.`);
+        if (Operators.hasValue(character + this.lookAhead())) {
+            const value = character + this.lookAhead();
+            const token = new Token(value, value, this.line, this.column);
+            this.updateState(0, 2, 2);
+            return token;
+        }
+
+        if (Operators.hasValue(character)) {
+            return this.recognizeToken(character, character);
+        }
+
+        if (Delimiters.hasValue(character)) {
+            return this.recognizeToken(character, character);
+        }
+
+        throw new Error(`Unrecognized character "${character}" at line ${this.line} and column ${this.column}.`);
     }
 }
