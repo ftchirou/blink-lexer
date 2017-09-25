@@ -9,7 +9,7 @@ const State = {
     NoNextState: -1
 }
 
-const equalTo = current => x => current === x;
+const equalToState = current => stateName => current === State[stateName];
 
 export default class StringFSM extends FSM {
     constructor() {
@@ -18,9 +18,9 @@ export default class StringFSM extends FSM {
 
     nextState(currentState, character) {
 
-        const stateIs = equalTo(currentState);
+        const stateIs = equalToState(currentState);
 
-        if (stateIs(State.Initial) && character === '"') {
+        if (stateIs('Initial') && character === '"') {
             return State.String
         }
 
@@ -28,15 +28,15 @@ export default class StringFSM extends FSM {
             return State.Escaped
         }
 
-        if (stateIs(State.Escaped)) {
+        if (stateIs('Escaped')) {
             return State.String
         }
 
-        if (stateIs(State.String) && character !== '"') {
+        if (stateIs('String') && character !== '"') {
             return State.String
         }
 
-        if (stateIs(State.String)) {
+        if (stateIs('String')) {
             return State.Closing
         }
 
