@@ -3,6 +3,7 @@ import { TokenType, Operators, Delimiters, Keywords } from './tokentype'
 import { isNewLine, isDigit, isLetter, isWhitespaceOrNewLine, isUnderscore } from './charUtils'
 import FSM from './fsm'
 import StringFSM from './fsmString'
+import NumberFsm from './fsmNumber'
 
 const isValidInIdentifier = char => /[a-z_$]/i.test(char);
 
@@ -69,86 +70,9 @@ export class Lexer {
         return new Token(TokenType.String, value, line, column)
     }
 
-    makeNumberFSM() {
-
-        const States = {
-            Initial: 1,
-            Integer: 2,
-            BeginNumberWithFractionalPart: 3,
-            NumberWithFractionalPart: 4,
-            BeginNumberWithExponent: 5,
-            BeginNumberWithSignedExponent: 6,
-            NumberWithExponent: 7,
-            NoNextState: -1
-        };
-
-        const nextState = (currentState, character) => {
-
-            if (currentState === States.Initial && isDigit(character)) {
-                return States.Integer;
-            }
-
-            if (character === '.') {
-                return States.BeginNumberWithFractionalPart;
-            }
-
-            if (currentState === States.NumberWithExponent && isDigit(character))
-                return States.NumberWithExponent
-
-            if (currentState === States.Integer) {
-                if (isDigit(character)) {
-                    return States.Integer;
-                }
-
-                if (character.toLowerCase() === 'e') {
-                    return States.BeginNumberWithExponent;
-                }
-
-            }
-
-            if (currentState === States.BeginNumberWithFractionalPart)
-                if (isDigit(character)) {
-                    return States.NumberWithFractionalPart;
-                }
-
-            if (currentState === States.NumberWithFractionalPart) {
-                if (isDigit(character)) {
-                    return States.NumberWithFractionalPart;
-                }
-
-                if (character.toLowerCase() === 'e') {
-                    return States.BeginNumberWithExponent;
-                }
-
-            }
-
-            if (currentState === States.BeginNumberWithExponent) {
-                if (character === '+' || character === '-') {
-                    return States.BeginNumberWithSignedExponent;
-                }
-
-                if (isDigit(character)) {
-                    return States.NumberWithExponent;
-                }
-
-            };
-
-            if (currentState === States.BeginNumberWithSignedExponent)
-                if (isDigit(character)) {
-                    return States.NumberWithExponent;
-                }
-
-            return States.NoNextState;
-        };
-
-        const fsm = new FSM(Object.values(States), States.Initial, [States.Integer, States.NumberWithFractionalPart, States.NumberWithExponent], States.NoNextState, nextState);
-        fsm.states = States;
-        return fsm;
-    }
-
     recognizeNumber() {
         const { position, line, column } = this.currentState();
-        const fsm = this.makeNumberFSM();
+        const fsm = new NumberFsm();
         let { recognized, value, state } = fsm.run(this.input.substring(this.position));
 
         if (recognized) {
