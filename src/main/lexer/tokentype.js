@@ -1,6 +1,6 @@
-import Dict from './Dict'
+import BiMap from './BiMap'
 
-export const Operators = new Dict({
+export const Operators = new BiMap({
     // Dispatch operators
     Dot: '.',
     // Assignment operators
@@ -38,7 +38,7 @@ export const Operators = new Dict({
     CaretEqual: '^=',
 });
 
-export const Delimiters = new Dict({
+export const Delimiters = new BiMap({
     // Delimiters
     Colon: ':',
     Comma: ',',
@@ -51,7 +51,7 @@ export const Delimiters = new Dict({
     RightParen: ')',
 });
 
-export const Keywords = new Dict({
+export const Keywords = new BiMap({
     // Keywords
     Abstract: 'abstract',
     As: 'as',

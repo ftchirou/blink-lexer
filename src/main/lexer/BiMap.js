@@ -1,6 +1,6 @@
 import { fromArrays } from './objectUtils';
 
-export default class Dict {
+export default class BiMap {
     constructor(obj) {
         this.map = obj;
         this._keys = Object.keys(obj);
